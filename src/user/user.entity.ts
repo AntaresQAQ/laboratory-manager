@@ -11,13 +11,16 @@ export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  // 用户名
   @Index({ unique: true })
   @Column({ type: 'varchar', nullable: false })
   username: string;
 
+  // 密码hash
   @Column({ type: 'char', length: 60 })
   password: string;
 
+  // 类型
   @Column({ type: 'enum', enum: UserType })
   type: UserType;
 

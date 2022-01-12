@@ -11,9 +11,14 @@ import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { AppMiddleware } from '@/app.middleware';
 import { ErrorFilter, ErrorMessageFilter } from './error.filter';
+import { ApparatusModule } from './apparatus/apparatus.module';
 
 @Module({
-  imports: [forwardRef(() => DatabaseModule), forwardRef(() => UserModule)],
+  imports: [
+    forwardRef(() => DatabaseModule),
+    forwardRef(() => UserModule),
+    forwardRef(() => ApparatusModule),
+  ],
   controllers: [AppController],
   providers: [AppService, ErrorFilter, ErrorMessageFilter],
 })

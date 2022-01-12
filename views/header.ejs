@@ -15,6 +15,11 @@
         实验室管理系统
       </span>
     </a>
+    <% if(user) { %>
+      <a class="item" href="/apparatus">
+        <i class="server icon"></i>设备
+      </a>
+    <% }%>
     <div class="right menu">
       <div class="item">
         <% if(user) {%>

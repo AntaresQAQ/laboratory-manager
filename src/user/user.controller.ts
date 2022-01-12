@@ -11,7 +11,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('login')
-  @Render('login')
+  @Render('user/login')
   async loginGet(@CurrentUser() currentUser: UserEntity): Promise<void> {
     if (currentUser) {
       throw new ErrorMessage(403, '您已经登录');

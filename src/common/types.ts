@@ -14,3 +14,15 @@ interface Locals {
 export interface ResponseWithLocals extends Response {
   locals: Locals;
 }
+
+export enum ApparatusType {
+  TOOL = '工具',
+  BASE = '基础',
+  CONSUMABLES = '耗材',
+}
+
+export enum ApparatusStatus {
+  NORMAL = '正常',
+  REPAIRING = '修理中',
+  SCRAPPED = '已报废',
+}
