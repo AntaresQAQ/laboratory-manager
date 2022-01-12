@@ -1,7 +1,19 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { UserEntity } from '@/user/user.entity';
 import { ApparatusStatus, ApparatusType } from '@/common/types';
+import { RepairEntity } from '@/repair/repair.entity';
+import { ScrapEntity } from '@/scrap/scrap.entity';
+import { ApprovalEntity } from '@/approval/approval.entity';
 
+// 设备
 @Entity('apparatus')
 export class ApparatusEntity {
   @PrimaryGeneratedColumn()
@@ -28,7 +40,7 @@ export class ApparatusEntity {
   date: Date;
 
   // 价格
-  @Column({ type: 'integer', nullable: true })
+  @Column({ type: 'double', nullable: true })
   price: number;
 
   // 状态
@@ -39,4 +51,16 @@ export class ApparatusEntity {
   @ManyToOne(() => UserEntity)
   @JoinColumn()
   principal: Promise<UserEntity>;
+
+  // 申请表
+  @ManyToOne(() => ApprovalEntity, approval => approval.apparatus)
+  approval: Promise<ApprovalEntity>;
+
+  // 维修记录
+  @OneToMany(() => RepairEntity, repair => repair.apparatus)
+  repairs: Promise<RepairEntity[]>;
+
+  // 报废记录
+  @OneToOne(() => ScrapEntity, scrap => scrap.apparatus)
+  scrap: Promise<ScrapEntity>;
 }

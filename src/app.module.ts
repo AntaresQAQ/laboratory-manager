@@ -12,12 +12,18 @@ import { UserModule } from './user/user.module';
 import { AppMiddleware } from '@/app.middleware';
 import { ErrorFilter, ErrorMessageFilter } from './error.filter';
 import { ApparatusModule } from './apparatus/apparatus.module';
+import { ScrapModule } from './scrap/scrap.module';
+import { RepairModule } from './repair/repair.module';
+import { ApprovalModule } from './approval/approval.module';
 
 @Module({
   imports: [
     forwardRef(() => DatabaseModule),
     forwardRef(() => UserModule),
     forwardRef(() => ApparatusModule),
+    forwardRef(() => ScrapModule),
+    forwardRef(() => RepairModule),
+    forwardRef(() => ApprovalModule),
   ],
   controllers: [AppController],
   providers: [AppService, ErrorFilter, ErrorMessageFilter],
