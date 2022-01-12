@@ -10,11 +10,12 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { AppMiddleware } from '@/app.middleware';
+import { ErrorFilter, ErrorMessageFilter } from './error.filter';
 
 @Module({
   imports: [forwardRef(() => DatabaseModule), forwardRef(() => UserModule)],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ErrorFilter, ErrorMessageFilter],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

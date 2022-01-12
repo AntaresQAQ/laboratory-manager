@@ -8,12 +8,14 @@ import ConnectRedis from 'connect-redis';
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import { ErrorFilter, ErrorMessageFilter } from './error.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.use(json({ limit: '1024mb' }));
 
+  app.useGlobalFilters(app.get(ErrorFilter), app.get(ErrorMessageFilter));
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
