@@ -6,7 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ApparatusStatus, ApparatusType } from '@/common/types';
+import { ApparatusType } from '@/common/types';
 import { ApparatusEntity } from '@/apparatus/apparatus.entity';
 import { UserEntity } from '@/user/user.entity';
 
@@ -42,29 +42,51 @@ export class ApprovalEntity {
   @Column({ type: 'integer', nullable: true })
   price: number;
 
-  // 状态
-  @Column({ type: 'enum', enum: ApprovalStatus })
-  status: ApparatusStatus;
-
   // 数量
   @Column({ type: 'integer', nullable: false })
   amount: number;
 
+  // 状态
+  @Column({ type: 'enum', enum: ApprovalStatus })
+  status: ApprovalStatus;
+
   // 申请日期
   @Column({ type: 'datetime', nullable: true })
   date: Date;
+
+  // 通过时间
+  @Column({ type: 'datetime', nullable: true })
+  acceptedDate: Date;
 
   // 申请人
   @ManyToOne(() => UserEntity)
   @JoinColumn()
   person: Promise<UserEntity>;
 
+  @Column({ nullable: true })
+  personId: number;
+
   // 通过人
   @ManyToOne(() => UserEntity)
   @JoinColumn()
   acceptedPerson: Promise<UserEntity>;
 
+  @Column({ nullable: true })
+  acceptedPersonId: number;
+
   // 设备列表
   @OneToMany(() => ApparatusEntity, apparatus => apparatus.approval)
   apparatus: Promise<ApparatusEntity[]>;
+
+  get isWaiting() {
+    return this.status === ApprovalStatus.WAITING;
+  }
+
+  get isAccepted() {
+    return this.status === ApprovalStatus.BUYING;
+  }
+
+  get isFinished() {
+    return this.status === ApprovalStatus.ARCHIVED;
+  }
 }

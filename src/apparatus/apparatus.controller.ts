@@ -18,8 +18,4 @@ export class ApparatusController {
       apparatus,
     };
   }
-
-  @Get(':id')
-  @Render('')
-  async apparatusOneGet(@Param() params: ApparatusOneParamsDto) {}
 }

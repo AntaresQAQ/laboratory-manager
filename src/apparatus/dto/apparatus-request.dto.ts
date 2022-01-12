@@ -1,5 +1,6 @@
 import { IsEnum, IsOptional } from 'class-validator';
-import { ApparatusStatus, ApparatusType } from '@/common/types';
+import { ApparatusType } from '@/common/types';
+import { ApparatusStatus } from '@/apparatus/apparatus.entity';
 
 export class ApparatusRequestDto {
   @IsEnum(ApparatusType)

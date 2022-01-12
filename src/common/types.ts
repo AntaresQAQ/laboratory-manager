@@ -5,10 +5,16 @@ export interface ReqSession {
   uid?: number;
 }
 
+interface localsUtil {
+  makeUrl: (path: string, form?: Record<string, string>) => string;
+  formatDate: (date: Date, formatString: string) => string;
+}
+
 interface Locals {
   user: UserEntity;
   req: Request;
   res: Response;
+  util: localsUtil;
 }
 
 export interface ResponseWithLocals extends Response {
@@ -19,10 +25,4 @@ export enum ApparatusType {
   TOOL = '工具',
   BASE = '基础',
   CONSUMABLES = '耗材',
-}
-
-export enum ApparatusStatus {
-  NORMAL = '正常',
-  REPAIRING = '修理中',
-  SCRAPPED = '已报废',
 }

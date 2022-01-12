@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ApparatusEntity } from '@/apparatus/apparatus.entity';
+import { ApparatusEntity, ApparatusStatus } from '@/apparatus/apparatus.entity';
 import { Repository } from 'typeorm';
-import { ApparatusStatus, ApparatusType } from '@/common/types';
+import { ApparatusType } from '@/common/types';
 
 @Injectable()
 export class ApparatusService {
@@ -19,6 +19,13 @@ export class ApparatusService {
     type?: ApparatusType,
     status?: ApparatusStatus,
   ): Promise<ApparatusEntity[]> {
-    return await this.apparatusRepository.find({ type, status });
+    const queryBuilder = this.apparatusRepository.createQueryBuilder();
+    if (type) {
+      queryBuilder.andWhere('type = :type', { type });
+    }
+    if (status) {
+      queryBuilder.andWhere('status = :status', { status });
+    }
+    return await queryBuilder.getMany();
   }
 }

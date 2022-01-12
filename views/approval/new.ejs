@@ -1,0 +1,52 @@
+<% title = "新购置申请" %>
+<%- include("../header") %>
+
+<div class="padding">
+  <h2>购置申请</h2>
+  <div>申请人: <%= user.username %></div>
+  <form method="post" class="ui form" style="margin-top: 30px">
+    <div class="field">
+      <label for="name">设备名</label>
+      <input type="text" name="name" id="name">
+    </div>
+    <div class="two fields">
+      <div class="field">
+        <label for="model">型号</label>
+        <input type="text" name="model" id="model">
+      </div>
+      <div class="field">
+        <label for="factory">厂家</label>
+        <input type="text" name="factory" id="factory">
+      </div>
+    </div>
+    <div class="three fields">
+      <div class="field">
+        <label>类型</label>
+        <div class="ui selection dropdown">
+          <input type="hidden" name="type">
+          <i class="dropdown icon"></i>
+          <div class="default text">类型</div>
+          <div class="menu">
+            <div class="item" data-value="工具">工具</div>
+            <div class="item" data-value="基础">基础</div>
+            <div class="item" data-value="耗材">耗材</div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="price">价格</label>
+        <input type="number" name="price" id="price" min="0" value="0.00">
+      </div>
+      <div class="field">
+        <label for="amount">数量</label>
+        <input type="number" name="amount" id="amount" min="1" value="1">
+      </div>
+    </div>
+    <button class="ui green button" type="submit">提交</button>
+  </form>
+</div>
+
+<script>
+  $('.dropdown').dropdown();
+</script>
+<%- include("../footer") %>

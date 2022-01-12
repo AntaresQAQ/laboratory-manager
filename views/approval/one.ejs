@@ -1,0 +1,107 @@
+<% title = "购置申请" %>
+<%- include("../header") %>
+
+<div class="padding">
+  <h1>购置申请</h1>
+  <div class="ui grid">
+    <div class="row">
+      <div class="column">
+        <h4 class="ui top attached block header">设备名称</h4>
+        <div class="ui bottom attached segment">
+          <%= approval.name %>
+        </div>
+      </div>
+    </div>
+    <div class="two column row">
+      <div class="column">
+        <h4 class="ui top attached block header">型号</h4>
+        <div class="ui bottom attached segment">
+          <%= approval.model %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">厂商</h4>
+        <div class="ui bottom attached segment">
+          <%= approval.factory %>
+        </div>
+      </div>
+    </div>
+    <div class="three column row">
+      <div class="column">
+        <h4 class="ui top attached block header">类型</h4>
+        <div class="ui bottom attached segment">
+          <%= approval.type %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">单价</h4>
+        <div class="ui bottom attached segment">
+          <%= approval.price %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">数量</h4>
+        <div class="ui bottom attached segment">
+          <%= approval.amount %>
+        </div>
+      </div>
+    </div>
+    <div class="five column row">
+      <div class="column">
+        <h4 class="ui top attached block header">申请人</h4>
+        <div class="ui bottom attached segment">
+          <%= person?.username || '无' %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">申请时间</h4>
+        <div class="ui bottom attached segment">
+          <%= util.formatDate(approval.date, "YYYY-MM-DD HH:mm:ss") %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">审批人</h4>
+        <div class="ui bottom attached segment">
+          <%= acceptedPerson?.username || '无' %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">审核时间</h4>
+        <div class="ui bottom attached segment">
+          <%=
+          approval.acceptedDate ?
+            util.formatDate(approval.acceptedDate, "YYYY-MM-DD HH:mm:ss")
+            : 'N/A'
+          %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">当前状态</h4>
+        <div class="ui bottom attached segment">
+          <%= approval.status %>
+        </div>
+      </div>
+    </div>
+    <% if(user) { %>
+      <div class="row">
+        <div class="column" style="text-align: center">
+          <% if(user.isLeader && approval.isWaiting) { %>
+            <a class="ui green button" style="margin: 20px"
+              href="/approval/<%= approval.id %>/accept"
+            >通过审批</a>
+            <a class="ui red button" style="margin: 20px"
+               href="/approval/<%= approval.id %>/refuse"
+            >拒绝申请</a>
+          <% } %>
+          <% if(approval.isAccepted) { %>
+            <a class="ui primary button" style="margin: 20px"
+               href="/approval/<%= approval.id %>/finish"
+            >采购完成</a>
+          <% } %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include("../footer") %>

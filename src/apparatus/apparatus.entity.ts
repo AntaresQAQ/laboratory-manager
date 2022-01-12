@@ -8,10 +8,16 @@ import {
   OneToOne,
 } from 'typeorm';
 import { UserEntity } from '@/user/user.entity';
-import { ApparatusStatus, ApparatusType } from '@/common/types';
+import { ApparatusType } from '@/common/types';
 import { RepairEntity } from '@/repair/repair.entity';
 import { ScrapEntity } from '@/scrap/scrap.entity';
 import { ApprovalEntity } from '@/approval/approval.entity';
+
+export enum ApparatusStatus {
+  NORMAL = '正常',
+  REPAIRING = '修理中',
+  SCRAPPED = '已报废',
+}
 
 // 设备
 @Entity('apparatus')
@@ -50,11 +56,17 @@ export class ApparatusEntity {
   // 负责人
   @ManyToOne(() => UserEntity)
   @JoinColumn()
-  principal: Promise<UserEntity>;
+  person: Promise<UserEntity>;
+
+  @Column()
+  personId: number;
 
   // 申请表
   @ManyToOne(() => ApprovalEntity, approval => approval.apparatus)
   approval: Promise<ApprovalEntity>;
+
+  @Column()
+  approvalId: number;
 
   // 维修记录
   @OneToMany(() => RepairEntity, repair => repair.apparatus)
