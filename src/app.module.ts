@@ -15,9 +15,11 @@ import { ApparatusModule } from './apparatus/apparatus.module';
 import { ScrapModule } from './scrap/scrap.module';
 import { RepairModule } from './repair/repair.module';
 import { ApprovalModule } from './approval/approval.module';
+import { ConfigModule } from './config/config.module';
 
 @Module({
   imports: [
+    ConfigModule,
     forwardRef(() => DatabaseModule),
     forwardRef(() => UserModule),
     forwardRef(() => ApparatusModule),

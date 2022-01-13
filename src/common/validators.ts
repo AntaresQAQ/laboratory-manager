@@ -20,6 +20,13 @@ export function If<T>(
 
 // class-validator's IsPort accepts strings only, but I prefer
 // writing port numbers as number
+export function IsPortNumber(validationOptions?: ValidationOptions) {
+  return If(
+    value => Number.isInteger(value) && value >= 1 && value <= 65535,
+    validationOptions,
+  );
+}
+
 export function IsIntString(validationOptions?: ValidationOptions) {
   return If(
     value => Number.parseInt(value.toString()).toString() === value,

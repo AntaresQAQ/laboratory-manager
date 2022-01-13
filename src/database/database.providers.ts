@@ -1,17 +1,19 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigService } from '@/config/config.service';
 export const databaseProviders = [
   TypeOrmModule.forRootAsync({
-    useFactory: () => ({
-      type: 'mariadb',
-      host: "127.0.0.1",
-      port: 3306,
-      username: "Antares",
-      password: "020830",
-      database: "lab_mgr",
+    useFactory: (configService: ConfigService) => ({
+      type: configService.config.database.type,
+      host: configService.config.database.host,
+      port: configService.config.database.port,
+      username: configService.config.database.username,
+      password: configService.config.database.password,
+      database: configService.config.database.database,
       entities: [`${__dirname}/../**/*.entity{.ts,.js}`],
-      logging: true,
-      charset: 'utf8mb4',
+      logging: !!process.env.LAB_MGR_LOG_SQL,
       synchronize: true,
+      charset: 'utf8mb4',
     }),
+    inject: [ConfigService],
   }),
 ];

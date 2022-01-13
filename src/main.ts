@@ -9,9 +9,12 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { ErrorFilter, ErrorMessageFilter } from './error.filter';
+import { ConfigService } from '@/config/config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  const configService = app.get(ConfigService);
 
   app.use(json({ limit: '1024mb' }));
 
@@ -28,11 +31,11 @@ async function bootstrap() {
   const redisStore = ConnectRedis(session);
   app.use(
     session({
-      secret: '12345678900987654321',
+      secret: configService.config.sessionSecret,
       resave: false,
       saveUninitialized: false,
       store: new redisStore({
-        client: new Redis('redis://127.0.0.1:6379'),
+        client: new Redis(configService.config.redis),
       }),
     }),
   );
