@@ -86,7 +86,7 @@ export class ApparatusController {
     if (!apparatus) throw new ErrorMessage(404, '设备不存在');
     if (!apparatus.isNormal) throw new ErrorMessage(402, '设备状态不正确');
     const price = parseFloat(body.price);
-    if (price < 0) throw new ErrorMessage(402, '非法的价格');
+    if (price <= 0) throw new ErrorMessage(402, '非法的价格');
     const repair = await this.repairService.createRepair(currentUser, apparatus, price);
     return { url: `/repair/${repair.id}` };
   }
