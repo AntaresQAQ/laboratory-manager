@@ -16,12 +16,15 @@ import { CurrentUser } from '@/common/user.decorator';
 import { UserEntity } from '@/user/user.entity';
 import { RepairApparatusRequestDto } from '@/apparatus/dto/repair-apparatus-request.dto';
 import { RepairService } from '@/repair/repair.service';
+import { ScrapApparatusRequestDto } from '@/apparatus/dto/scrap-apparatus-request.dto';
+import { ScrapService } from '@/scrap/scrap.service';
 
 @Controller('apparatus')
 export class ApparatusController {
   constructor(
     private readonly apparatusService: ApparatusService,
     private readonly repairService: RepairService,
+    private readonly scrapService: ScrapService,
   ) {}
 
   @Get()
@@ -46,9 +49,11 @@ export class ApparatusController {
     const id = parseInt(param.id);
     const apparatus = await this.apparatusService.findApparatusById(id);
     if (!apparatus) throw new ErrorMessage(404, '设备不存在');
+    const scrap = await apparatus.scrap;
     return {
       apparatus,
       person: await apparatus.person,
+      scrap,
     };
   }
 
@@ -62,6 +67,7 @@ export class ApparatusController {
     const id = parseInt(param.id);
     const apparatus = await this.apparatusService.findApparatusById(id);
     if (!apparatus) throw new ErrorMessage(404, '设备不存在');
+    if (!apparatus.isNormal) throw new ErrorMessage(402, '设备状态不正确');
     return {
       apparatus,
     };
@@ -78,9 +84,42 @@ export class ApparatusController {
     const id = parseInt(param.id);
     const apparatus = await this.apparatusService.findApparatusById(id);
     if (!apparatus) throw new ErrorMessage(404, '设备不存在');
+    if (!apparatus.isNormal) throw new ErrorMessage(402, '设备状态不正确');
     const price = parseFloat(body.price);
     if (price < 0) throw new ErrorMessage(402, '非法的价格');
     const repair = await this.repairService.createRepair(currentUser, apparatus, price);
     return { url: `/repair/${repair.id}` };
+  }
+
+  @Get(':id/scrap')
+  @Render('apparatus/scrap')
+  async apparatusScrapGet(
+    @CurrentUser() currentUser: UserEntity,
+    @Param() param: OneApparatusParamsDto,
+  ) {
+    if (!currentUser) throw new ErrorMessage(403, '请先登录');
+    const id = parseInt(param.id);
+    const apparatus = await this.apparatusService.findApparatusById(id);
+    if (!apparatus) throw new ErrorMessage(404, '设备不存在');
+    if (!apparatus.isNormal) throw new ErrorMessage(402, '设备状态不正确');
+    return {
+      apparatus,
+    };
+  }
+
+  @Post(':id/scrap')
+  @Redirect()
+  async apparatusScrapPost(
+    @CurrentUser() currentUser: UserEntity,
+    @Param() param: OneApparatusParamsDto,
+    @Body() body: ScrapApparatusRequestDto,
+  ) {
+    if (!currentUser) throw new ErrorMessage(403, '请先登录');
+    const id = parseInt(param.id);
+    const apparatus = await this.apparatusService.findApparatusById(id);
+    if (!apparatus) throw new ErrorMessage(404, '设备不存在');
+    if (!apparatus.isNormal) throw new ErrorMessage(402, '设备状态不正确');
+    await this.scrapService.createScrap(apparatus, body.reason);
+    return { url: `/apparatus/${apparatus.id}` };
   }
 }

@@ -42,7 +42,7 @@
       <div class="column">
         <h4 class="ui top attached block header">购置日期</h4>
         <div class="ui bottom attached segment">
-          <%= util.formatDate(apparatus.date,"YYYY-MM-DD HH:mm:ss") %>
+          <%= util.formatDate(apparatus.date, "YYYY-MM-DD HH:mm:ss") %>
         </div>
       </div>
       <div class="column">
@@ -64,16 +64,36 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="column" style="text-align: center">
-        <a class="ui blue button" style="margin: 20px"
-           href="/apparatus/<%= apparatus.id %>/repair"
-        >维修</a>
-        <a class="ui red button" style="margin: 20px"
-           href="/apparatus/<%= apparatus.id %>/scrap"
-        >报废</a>
+    <% if(apparatus.isScrapped) { %>
+      <div class="row">
+        <div class="column">
+          <h4 class="ui top attached block header">报废时间</h4>
+          <div class="ui bottom attached segment">
+            <%= util.formatDate(scrap.date, "YYYY-MM-DD HH:mm:ss") %>
+          </div>
+        </div>
       </div>
-    </div>
+      <div class="row">
+        <div class="column">
+          <h4 class="ui top attached block header">报废原因</h4>
+          <div class="ui bottom attached segment">
+            <%= scrap.reason %>
+          </div>
+        </div>
+      </div>
+    <% } %>
+    <% if(apparatus.isNormal) { %>
+      <div class="row">
+        <div class="column" style="text-align: center">
+          <a class="ui blue button" style="margin: 20px"
+             href="/apparatus/<%= apparatus.id %>/repair"
+          >维修</a>
+          <a class="ui red button" style="margin: 20px"
+             href="/apparatus/<%= apparatus.id %>/scrap"
+          >报废</a>
+        </div>
+      </div>
+    <% } %>
   </div>
 </div>
 

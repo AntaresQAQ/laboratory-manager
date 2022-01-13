@@ -1,0 +1,15 @@
+<% title = "报废设备" %>
+<%- include("../header") %>
+
+<div class="padding">
+  <h1>报废设备</h1>
+  <div>设备: <%= apparatus.name %> (<%= apparatus.type %>-<%= apparatus.id %>)</div>
+  <form method="post" class="ui form" style="margin-top: 30px">
+    <div class="field">
+      <label for="reason">报废原因</label>
+      <textarea name="reason" id="reason"></textarea>
+    </div>
+    <button class="ui green button" type="submit">提交</button>
+  </form>
+</div>
+<%- include("../footer") %>
