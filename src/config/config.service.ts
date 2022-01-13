@@ -2,17 +2,16 @@ import { AppConfig } from '@/config/config.schema';
 import { validateSync } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { load } from 'js-yaml';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
+import { join } from 'path';
 
 export class ConfigService {
   readonly config: AppConfig;
 
   constructor() {
-    const filePath = process.env.LAB_MGR_CONFIG_FILE;
-    if (!filePath) {
-      throw new Error(
-        'Please specify configuration file with environment variable LAB_MGR_CONFIG_FILE',
-      );
+    const filePath = join(__dirname, '..', '..', 'config.yaml');
+    if (!existsSync(filePath)) {
+      throw new Error('Please Complete the Configuration File "config.yaml"');
     }
 
     const config = load(readFileSync(filePath).toString());

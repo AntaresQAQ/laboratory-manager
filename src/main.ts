@@ -5,7 +5,7 @@ import { json } from 'express';
 import session from 'express-session';
 import Redis from 'ioredis';
 import ConnectRedis from 'connect-redis';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { ErrorFilter, ErrorMessageFilter } from './error.filter';
@@ -44,7 +44,14 @@ async function bootstrap() {
   app.setViewEngine('ejs');
   app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/public/' });
 
-  await app.listen(3000);
+  await app.listen(
+    configService.config.server.port,
+    configService.config.server.hostname,
+  );
+  Logger.log(
+    `App is listening on ${configService.config.server.hostname}:${configService.config.server.port}`,
+    'Bootstrap',
+  );
 }
 bootstrap().catch(err => {
   console.error(err);

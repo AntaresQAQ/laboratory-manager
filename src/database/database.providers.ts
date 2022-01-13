@@ -10,7 +10,7 @@ export const databaseProviders = [
       password: configService.config.database.password,
       database: configService.config.database.database,
       entities: [`${__dirname}/../**/*.entity{.ts,.js}`],
-      logging: !!process.env.LAB_MGR_LOG_SQL,
+      logging: configService.config.database.logging,
       synchronize: true,
       charset: 'utf8mb4',
     }),

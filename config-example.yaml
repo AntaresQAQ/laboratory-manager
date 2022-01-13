@@ -1,3 +1,6 @@
+server:
+  hostname: 127.0.0.1
+  port: 3000
 database:
   type: mariadb
   host: 127.0.0.1
@@ -5,5 +8,6 @@ database:
   username: username
   password: password
   database: database
+  logging: false
 redis: redis://127.0.0.1:6379
 sessionSecret: Don't leak this
