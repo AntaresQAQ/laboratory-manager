@@ -21,7 +21,7 @@ export class ApprovalController {
   constructor(private readonly approvalService: ApprovalService) {}
 
   @Get()
-  @Render('approval/index')
+  @Render('approval/index.ejs')
   async approvalGet(@Query() query: ApprovalRequestDto) {
     const approvals = await this.approvalService.findApprovalsByStatus(query.status);
     return { approvals };

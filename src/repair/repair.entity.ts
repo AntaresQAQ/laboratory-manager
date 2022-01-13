@@ -25,13 +25,22 @@ export class RepairEntity {
   @Column({ type: 'double', nullable: false })
   price: number;
 
+  @Column({ type: 'boolean', default: false })
+  finished: boolean;
+
   // 送修人
   @ManyToOne(() => UserEntity)
   @JoinColumn()
   person: Promise<UserEntity>;
 
+  @Column()
+  personId: number;
+
   // 设备
   @ManyToOne(() => ApparatusEntity, apparatus => apparatus.repairs)
   @JoinColumn()
   apparatus: Promise<ApparatusEntity>;
+
+  @Column()
+  apparatusId: number;
 }

@@ -1,0 +1,57 @@
+<% title = "维修记录" %>
+<%- include("../header") %>
+<div class="padding">
+  <div class="ui mini">
+    <div class="inline fields" style="margin-bottom: 25px; white-space: nowrap; ">
+      <div class="ui right labeled icon mini blue dropdown button">
+        <i class="angle down icon"></i>筛选状态
+        <div class="menu">
+          <a class="<%if(req.query.finished === undefined) {%><%- 'disabled '%><% } %>item"
+             href="/approval">所有</a>
+          <a class="<%if(req.query.finished === "0") {%><%- 'disabled '%><% } %>item"
+             href="/approval?status=维修中">维修中</a>
+          <a class="<%if(req.query.finished === "1") {%><%- 'disabled '%><% } %>item"
+             href="/approval?status=已完成">已完成</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table class="ui very basic center aligned table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>维修编号</th>
+      <th>设备名称</th>
+      <th>负责人员</th>
+      <th>维修时间</th>
+      <th>维修状态</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <%let index=0 %>
+    <% for(const repair of repairs) { %>
+      <tr>
+        <td><%= index+1 %></td>
+        <td><%= repair.id %></td>
+        <td><a href="/repair/<%= repair.id %>"><%= names[index] %></a></td>
+        <td><%= usernames[index] %></td>
+        <td><%= util.formatDate(repair.date,"YYYY-MM-DD HH:mm:ss")%></td>
+        <td>
+          <% if(repair.finished ) { %>
+            <span class="ui gray label">已完成</span>
+          <% }else{%>
+              <span class="ui blue label">维修中</span>
+          <% } %>
+        </td>
+      </tr>
+    <% index++ %>
+    <% } %>
+    </tbody>
+  </table>
+</div>
+<script>
+  $(".ui.dropdown").dropdown();
+</script>
+
+<%- include("../footer") %>

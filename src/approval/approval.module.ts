@@ -8,5 +8,6 @@ import { ApprovalController } from './approval.controller';
   imports: [TypeOrmModule.forFeature([ApprovalEntity])],
   providers: [ApprovalService],
   controllers: [ApprovalController],
+  exports: [ApprovalService],
 })
 export class ApprovalModule {}

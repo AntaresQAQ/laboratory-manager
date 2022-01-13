@@ -1,0 +1,51 @@
+<% title = "维修信息" %>
+<%- include("../header") %>
+
+<div class="padding">
+  <h1>维修信息</h1>
+  <div class="ui grid">
+    <div class="row">
+      <div class="column">
+        <h4 class="ui top attached block header">设备名称</h4>
+        <div class="ui bottom attached segment">
+          <%= apparatus.name %>
+        </div>
+      </div>
+    </div>
+    <div class="four column row">
+      <div class="column">
+        <h4 class="ui top attached block header">维修日期</h4>
+        <div class="ui bottom attached segment">
+          <%= util.formatDate(repair.date,"YYYY-MM-DD HH:mm:ss") %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">维修价格</h4>
+        <div class="ui bottom attached segment">
+          <%= repair.price %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">送修人</h4>
+        <div class="ui bottom attached segment">
+          <%= person.username %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">维修状态</h4>
+        <div class="ui bottom attached segment">
+          <%= repair.finish ? '已结束':'维修中' %>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column" style="text-align: center">
+        <a class="ui blue button" style="margin: 20px"
+           href="/repair/<%= repair.id %>/finish"
+        >结束维修</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("../footer") %>

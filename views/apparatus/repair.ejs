@@ -1,0 +1,20 @@
+<% title = "新维修记录" %>
+<%- include("../header") %>
+
+<div class="padding">
+  <h1>新维修记录</h1>
+  <div>创建人: <%= user.username %></div>
+  <div>设备: <%= apparatus.name %> (<%= apparatus.type %>-<%= apparatus.id %>)</div>
+  <form method="post" class="ui form" style="margin-top: 30px">
+    <div class="field">
+      <label for="price">维修价格</label>
+      <input type="number" name="price" id="price" min="0" value="0.00">
+    </div>
+    <button class="ui green button" type="submit">提交</button>
+  </form>
+</div>
+
+<script>
+  $(".dropdown").dropdown();
+</script>
+<%- include("../footer") %>

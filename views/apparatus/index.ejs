@@ -68,7 +68,7 @@
         <td><a href="/apparatus/<%= apparatus.id %>"><%= apparatus.name %></a></td>
         <td><%= apparatus.type %></td>
         <td><%= util.formatDate(apparatus.date, "YYYY-MM-DD HH:mm:ss") %></td>
-        <% let color = apparatus.isNormal ? 'green' : apparatus.isRepairing ? 'orange' : 'red' %>
+        <% let color = apparatus.isNormal ? 'green' : apparatus.isRepairing ? 'orange' : 'gray' %>
         <td><span class="ui <%= color %> label"><%= apparatus.status %></span></td>
       </tr>
     <% } %>
