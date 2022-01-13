@@ -6,7 +6,7 @@ export interface ReqSession {
 }
 
 interface localsUtil {
-  makeUrl: (path: string, form?: Record<string, string>) => string;
+  makeUrl: (path: string, query?: Record<string, string>) => string;
   formatDate: (date: Date, formatString: string) => string;
 }
 

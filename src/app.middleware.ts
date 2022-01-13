@@ -10,8 +10,11 @@ export class AppMiddleware implements NestMiddleware {
     res.locals.req = req;
     res.locals.res = res;
     res.locals.util = {
-      makeUrl(path, form?) {
-        const encoded = encode(form);
+      makeUrl(path, query?) {
+        for (const key in query) {
+          if (query[key] === undefined) delete query[key];
+        }
+        const encoded = encode(query);
         if (encoded) path += '?' + encoded;
         return path;
       },

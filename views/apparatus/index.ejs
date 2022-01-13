@@ -1,6 +1,82 @@
-<% title = "设备" %>
-<%- include('../header') %>
+<% title = "设备列表" %>
+<%- include("../header") %>
+<div class="padding">
+  <div class="ui grid" style="margin-bottom: 20px">
+    <div class="row">
+      <div class="ui right labeled icon mini blue dropdown button">
+        <i class="angle down icon"></i>筛选类别
+        <div class="menu">
+          <a class="<% if(!req.query.type) { %><%- 'disabled ' %><% } %>item"
+             href="<%= util.makeUrl('/apparatus', Object.assign({}, req.query, { type: undefined })) %>">
+            所有
+          </a>
+          <a class="<% if(req.query.type === "工具") { %><%- 'disabled ' %><% } %>item"
+             href="<%= util.makeUrl('/apparatus', Object.assign({}, req.query, { type: "工具" })) %>">
+            工具
+          </a>
+          <a class="<% if(req.query.type === "基础") { %><%- 'disabled ' %><% } %>item"
+             href="<%= util.makeUrl('/apparatus', Object.assign({}, req.query, { type: "基础" })) %>">
+            基础
+          </a>
+          <a class="<% if(req.query.type === "耗材") { %><%- 'disabled ' %><% } %>item"
+             href="<%= util.makeUrl('/apparatus', Object.assign({}, req.query, { type: "耗材" })) %>">
+            耗材
+          </a>
+        </div>
+      </div>
+      <div class="ui right labeled icon mini green dropdown button" style="margin-left: 10px">
+        <i class="angle down icon"></i>筛选状态
+        <div class="menu">
+          <a class="<% if(!req.query.status) { %><%- 'disabled ' %><% } %>item"
+             href="<%= util.makeUrl('/apparatus', Object.assign({}, req.query, { status: undefined })) %>">
+            所有
+          </a>
+          <a class="<% if(req.query.status === "工具") { %><%- 'disabled ' %><% } %>item"
+             href="<%= util.makeUrl('/apparatus', Object.assign({}, req.query, { status: "正常" })) %>">
+            正常
+          </a>
+          <a class="<% if(req.query.status === "基础") { %><%- 'disabled ' %><% } %>item"
+             href="<%= util.makeUrl('/apparatus', Object.assign({}, req.query, { status: "修理中" })) %>">
+            修理中
+          </a>
+          <a class="<% if(req.query.status === "耗材") { %><%- 'disabled ' %><% } %>item"
+             href="<%= util.makeUrl('/apparatus', Object.assign({}, req.query, { status: "已报废" })) %>">
+            已报废
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table class="ui very basic center aligned table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>设备编号</th>
+      <th>设备名称</th>
+      <th>设备类型</th>
+      <th>购置时间</th>
+      <th>设备状态</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% let index = 0 %>
+    <% for(const apparatus of apparatuses) { %>
+      <tr>
+        <td><%= ++index %></td>
+        <td><%= apparatus.type %>-<%= apparatus.id %></td>
+        <td><a href="/apparatus/<%= apparatus.id %>"><%= apparatus.name %></a></td>
+        <td><%= apparatus.type %></td>
+        <td><%= util.formatDate(apparatus.date, "YYYY-MM-DD HH:mm:ss") %></td>
+        <% let color = apparatus.isNormal ? 'green' : apparatus.isRepairing ? 'orange' : 'red' %>
+        <td><span class="ui <%= color %> label"><%= apparatus.status %></span></td>
+      </tr>
+    <% } %>
+    </tbody>
+  </table>
+</div>
+<script>
+  $(".ui.dropdown").dropdown();
+</script>
 
-
-
-<%- include('../footer') %>
+<%- include("../footer") %>

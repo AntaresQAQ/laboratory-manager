@@ -75,4 +75,16 @@ export class ApparatusEntity {
   // 报废记录
   @OneToOne(() => ScrapEntity, scrap => scrap.apparatus)
   scrap: Promise<ScrapEntity>;
+
+  get isNormal() {
+    return this.status === ApparatusStatus.NORMAL;
+  }
+
+  get isRepairing() {
+    return this.status === ApparatusStatus.REPAIRING;
+  }
+
+  get isScrapped() {
+    return this.status === ApparatusStatus.SCRAPPED;
+  }
 }

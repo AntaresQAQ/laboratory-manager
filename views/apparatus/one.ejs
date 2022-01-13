@@ -1,0 +1,70 @@
+<% title = "设备信息" %>
+<%- include("../header") %>
+
+<div class="padding">
+  <h1>设备信息</h1>
+  <div class="ui grid">
+    <div class="row">
+      <div class="three wide column">
+        <h4 class="ui top attached block header">设备编号</h4>
+        <div class="ui bottom attached segment">
+          <%= apparatus.type %>-<%= apparatus.id %>
+        </div>
+      </div>
+      <div class="thirteen wide column">
+        <h4 class="ui top attached block header">设备名称</h4>
+        <div class="ui bottom attached segment">
+          <%= apparatus.name %>
+        </div>
+      </div>
+    </div>
+    <div class="three column row">
+      <div class="column">
+        <h4 class="ui top attached block header">设备类型</h4>
+        <div class="ui bottom attached segment">
+          <%= apparatus.type %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">设备型号</h4>
+        <div class="ui bottom attached segment">
+          <%= apparatus.model %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">设备厂商</h4>
+        <div class="ui bottom attached segment">
+          <%= apparatus.factory %>
+        </div>
+      </div>
+    </div>
+    <div class="four column row">
+      <div class="column">
+        <h4 class="ui top attached block header">购置日期</h4>
+        <div class="ui bottom attached segment">
+          <%= util.formatDate(apparatus.date,"YYYY-MM-DD HH:mm:ss") %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">设备价格</h4>
+        <div class="ui bottom attached segment">
+          <%= apparatus.price %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">负责人</h4>
+        <div class="ui bottom attached segment">
+          <%= person.username %>
+        </div>
+      </div>
+      <div class="column">
+        <h4 class="ui top attached block header">设备状态</h4>
+        <div class="ui bottom attached segment">
+          <%= apparatus.status %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("../footer") %>
