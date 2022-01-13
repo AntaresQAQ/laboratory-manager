@@ -7,11 +7,11 @@
         <i class="angle down icon"></i>筛选状态
         <div class="menu">
           <a class="<%if(req.query.finished === undefined) {%><%- 'disabled '%><% } %>item"
-             href="/approval">所有</a>
+             href="/repair">所有</a>
           <a class="<%if(req.query.finished === "0") {%><%- 'disabled '%><% } %>item"
-             href="/approval?status=维修中">维修中</a>
+             href="/repair?finished=0">维修中</a>
           <a class="<%if(req.query.finished === "1") {%><%- 'disabled '%><% } %>item"
-             href="/approval?status=已完成">已完成</a>
+             href="/repair?finished=1">已完成</a>
         </div>
       </div>
     </div>

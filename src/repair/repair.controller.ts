@@ -1,8 +1,10 @@
-import { Controller, Get, Param, Query, Render } from '@nestjs/common';
+import { Controller, Get, Param, Query, Redirect, Render } from '@nestjs/common';
 import { RepairService } from '@/repair/repair.service';
 import { OneRepairParamsDto } from '@/repair/dto/one-repair-params.dto';
 import { ErrorMessage } from '@/common/exception';
 import { RepairRequestDto } from '@/repair/dto/repair-request.dto';
+import { CurrentUser } from '@/common/user.decorator';
+import { UserEntity } from '@/user/user.entity';
 
 @Controller('repair')
 export class RepairController {
@@ -10,7 +12,11 @@ export class RepairController {
 
   @Get()
   @Render('repair/index')
-  async repairGet(@Query() query: RepairRequestDto) {
+  async repairGet(
+    @CurrentUser() currentUser: UserEntity,
+    @Query() query: RepairRequestDto,
+  ) {
+    if (!currentUser) throw new ErrorMessage(403, '请先登录');
     let finished: boolean;
     if (query.finished) {
       finished = !!parseInt(query.finished);
@@ -27,7 +33,11 @@ export class RepairController {
 
   @Get(':id')
   @Render('repair/one')
-  async repairOneGet(@Param() param: OneRepairParamsDto) {
+  async repairOneGet(
+    @CurrentUser() currentUser: UserEntity,
+    @Param() param: OneRepairParamsDto,
+  ) {
+    if (!currentUser) throw new ErrorMessage(403, '请先登录');
     const id = parseInt(param.id);
     const repair = await this.repairService.findRepairById(id);
     if (!repair) throw new ErrorMessage(404, '维修记录不存在');
@@ -36,5 +46,20 @@ export class RepairController {
       person: await repair.person,
       apparatus: await repair.apparatus,
     };
+  }
+
+  @Get(':id/finish')
+  @Redirect()
+  async repairFinishGet(
+    @CurrentUser() currentUser: UserEntity,
+    @Param() param: OneRepairParamsDto,
+  ) {
+    if (!currentUser) throw new ErrorMessage(403, '请先登录');
+    const id = parseInt(param.id);
+    const repair = await this.repairService.findRepairById(id);
+    if (!repair) throw new ErrorMessage(404, '维修记录不存在');
+    if (repair.finished) throw new ErrorMessage(402, '维修已结束');
+    await this.repairService.finishRepair(repair);
+    return { url: `/repair/${repair.id}` };
   }
 }
