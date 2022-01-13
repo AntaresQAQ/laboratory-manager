@@ -1,7 +1,60 @@
-<% title = "申请" %>
+<% title = "采购申请" %>
 <%- include("../header") %>
-<div>
-  <a class="ui green button" href="/approval/new">新申请</a>
+<div class="padding">
+  <div class="ui mini">
+    <div class="inline fields" style="margin-bottom: 25px; white-space: nowrap; ">
+      <div class="ui right labeled icon mini blue dropdown button">
+        <i class="angle down icon"></i>筛选状态
+        <div class="menu">
+          <a class="<%if(!req.query.status) {%><%- 'disabled '%><% } %>item" href="/approval">所有</a>
+          <a class="<%if(req.query.status === "待审批") {%><%- 'disabled '%><% } %>item"
+             href="/approval?status=待审批">待审批</a>
+          <a class="<%if(req.query.status === "采购中") {%><%- 'disabled '%><% } %>item"
+             href="/approval?status=采购中">采购中</a>
+          <a class="<%if(req.query.status === "已入库") {%><%- 'disabled '%><% } %>item"
+             href="/approval?status=已入库">已入库</a>
+        </div>
+      </div>
+      <a href="/approval/new"
+         class="ui green mini labeled icon right floated button"
+         style="margin-left: auto; ">
+        <i class="icon add"></i>
+        新申请
+      </a>
+    </div>
+  </div>
+  <table class="ui very basic center aligned table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>申请编号</th>
+      <th>设备名称</th>
+      <th>设备类型</th>
+      <th>采购数量</th>
+      <th>申请时间</th>
+      <th>申请状态</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <%let index=0 %>
+      <% for(const approval of approvals) { %>
+        <tr>
+          <td><%= ++index %></td>
+          <td><%= approval.id %></td>
+          <td><a href="/approval/<%= approval.id %>"><%= approval.name %></a></td>
+          <td><%= approval.type %></td>
+          <td><%= approval.amount %></td>
+          <td><%= util.formatDate(approval.date,"YYYY-MM-DD HH:mm:ss")%></td>
+          <% let color = approval.isWaiting ? 'blue' : approval.isAccepted ? 'green' : 'gray' %>
+          <td><span class="ui <%= color %> label"><%= approval.status %></span></td>
+        </tr>
+    <% } %>
+    </tbody>
+  </table>
 </div>
+<script>
+  $(".ui.dropdown").dropdown();
+</script>
 
 <%- include("../footer") %>

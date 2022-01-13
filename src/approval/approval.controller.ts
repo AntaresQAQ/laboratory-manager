@@ -1,18 +1,31 @@
-import { Body, Controller, Get, Param, Post, Redirect, Render } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  Redirect,
+  Render,
+} from '@nestjs/common';
 import { CurrentUser } from '@/common/user.decorator';
 import { UserEntity } from '@/user/user.entity';
 import { ErrorMessage } from '@/common/exception';
 import { NewApprovalRequestDto } from '@/approval/dto/new-approval-request.dto';
 import { ApprovalService } from '@/approval/approval.service';
 import { OneApprovalParamDto } from '@/approval/dto/one-approval-param.dto';
+import { ApprovalRequestDto } from '@/approval/dto/approval-request.dto';
 
 @Controller('approval')
 export class ApprovalController {
-  constructor(private readonly approvalSrvice: ApprovalService) {}
+  constructor(private readonly approvalService: ApprovalService) {}
 
   @Get()
   @Render('approval/index')
-  async approvalGet() {}
+  async approvalGet(@Query() query: ApprovalRequestDto) {
+    const approvals = await this.approvalService.findApprovalsByStatus(query.status);
+    return { approvals };
+  }
 
   @Get('new')
   @Render('approval/new')
@@ -31,7 +44,7 @@ export class ApprovalController {
     if (price <= 0) throw new ErrorMessage(400, '非法的价格');
     const amount = parseInt(body.amount);
     if (amount < 1) throw new ErrorMessage(400, '非法的数量');
-    const approval = await this.approvalSrvice.createApproval(
+    const approval = await this.approvalService.createApproval(
       currentUser,
       body.name,
       body.model,
@@ -51,7 +64,7 @@ export class ApprovalController {
   ) {
     if (!currentUser) throw new ErrorMessage(403, '请先登录');
     const id = parseInt(param.id);
-    const approval = await this.approvalSrvice.findApprovalById(id);
+    const approval = await this.approvalService.findApprovalById(id);
     if (!approval) throw new ErrorMessage(404, '申请不存在');
     return {
       approval,
@@ -69,10 +82,10 @@ export class ApprovalController {
     if (!currentUser) throw new ErrorMessage(403, '请先登录');
     if (!currentUser.isLeader) throw new ErrorMessage(403, '您没有权限');
     const id = parseInt(param.id);
-    const approval = await this.approvalSrvice.findApprovalById(id);
+    const approval = await this.approvalService.findApprovalById(id);
     if (!approval) throw new ErrorMessage(404, '申请不存在');
     if (!approval.isWaiting) throw new ErrorMessage(402, '错误的状态');
-    await this.approvalSrvice.acceptApproval(currentUser, approval);
+    await this.approvalService.acceptApproval(currentUser, approval);
     return { url: `/approval/${approval.id}` };
   }
 
@@ -85,10 +98,10 @@ export class ApprovalController {
     if (!currentUser) throw new ErrorMessage(403, '请先登录');
     if (!currentUser.isLeader) throw new ErrorMessage(403, '您没有权限');
     const id = parseInt(param.id);
-    const approval = await this.approvalSrvice.findApprovalById(id);
+    const approval = await this.approvalService.findApprovalById(id);
     if (!approval) throw new ErrorMessage(404, '申请不存在');
     if (!approval.isWaiting) throw new ErrorMessage(402, '错误的状态');
-    await this.approvalSrvice.refuseApproval(approval);
+    await this.approvalService.refuseApproval(approval);
   }
 
   @Get(':id/finish')
@@ -99,10 +112,10 @@ export class ApprovalController {
   ) {
     if (!currentUser) throw new ErrorMessage(403, '请先登录');
     const id = parseInt(param.id);
-    const approval = await this.approvalSrvice.findApprovalById(id);
+    const approval = await this.approvalService.findApprovalById(id);
     if (!approval) throw new ErrorMessage(404, '申请不存在');
     if (!approval.isAccepted) throw new ErrorMessage(402, '错误的状态');
-    await this.approvalSrvice.finishApproval(currentUser, approval);
+    await this.approvalService.finishApproval(currentUser, approval);
     return { url: `/approval/${approval.id}` };
   }
 }

@@ -19,6 +19,19 @@ export class ApprovalService {
     return await this.approvalRepository.findOne({ id });
   }
 
+  async findApprovalsByStatus(status?: ApprovalStatus): Promise<ApprovalEntity[]> {
+    if (status) {
+      return await this.approvalRepository.find({
+        where: { status },
+        order: { id: 'DESC' },
+      });
+    } else {
+      return await this.approvalRepository.find({
+        order: { id: 'DESC' },
+      });
+    }
+  }
+
   async createApproval(
     person: UserEntity,
     name: string,
