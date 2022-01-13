@@ -1,0 +1,34 @@
+<% title = "添加用户" %>
+<%- include("../header") %>
+
+<div class="padding">
+  <h1>添加用户</h1>
+  <form method="post" class="ui form" style="margin-top: 30px">
+    <div class="field">
+      <label for="type">类别</label>
+      <div class="ui selection dropdown">
+        <input type="hidden" name="type">
+        <i class="dropdown icon"></i>
+        <div class="default text">类别</div>
+        <div class="menu">
+          <div class="item" data-value="LEADER">领导</div>
+          <div class="item" data-value="WORKER">员工</div>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="username">用户名</label>
+      <input type="text" name="username" id="username">
+    </div>
+    <div class="field">
+      <label for="password">密码</label>
+      <input type="text" name="password" id="password">
+    </div>
+    <button class="ui green button" type="submit">提交</button>
+  </form>
+</div>
+
+<script>
+  $(".dropdown").dropdown();
+</script>
+<%- include("../footer") %>

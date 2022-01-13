@@ -25,17 +25,23 @@
       <a class="item" href="/repair">
         <i class="setting icon"></i>维修
       </a>
-    <% }%>
+    <% } %>
+    <a class="item" href="/user">
+      <i class="user icon"></i>用户
+    </a>
     <div class="right menu">
       <div class="item">
-        <% if(user) {%>
-        <div class="ui simple dropdown item">
-          <%= user.username %>
-          <i class="dropdown icon"></i>
-          <div class="menu">
-            <a class="item" href="/user/logout"><i class="power icon"></i>注销</a>
+        <% if(user) { %>
+          <div class="ui simple dropdown item">
+            <%= user.username %>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <% if(user.isAdmin) { %>
+                <a class="item" href="/user/add"><i class="add icon"></i>添加用户</a>
+              <% } %>
+              <a class="item" href="/user/logout"><i class="power icon"></i>注销</a>
+            </div>
           </div>
-        </div>
         <% } else { %>
           <a class="ui primary button" href="/user/login">登录</a>
         <% } %>

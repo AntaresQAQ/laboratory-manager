@@ -28,6 +28,10 @@ export class UserService {
     return await this.userRepository.findOne({ username });
   }
 
+  public async findUsers(): Promise<UserEntity[]> {
+    return await this.userRepository.find();
+  }
+
   public async createUser(username: string, password: string, type: UserType) {
     const user = new UserEntity();
     user.username = username;
