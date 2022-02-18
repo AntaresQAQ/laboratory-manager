@@ -42,7 +42,6 @@ async function bootstrap() {
 
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs');
-  app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/public/' });
 
   await app.listen(
     configService.config.server.port,
